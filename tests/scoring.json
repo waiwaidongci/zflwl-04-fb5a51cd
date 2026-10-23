@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "weight_policy": {
+    "version": 1,
+    "basis": "business_priority",
+    "core_min_share": 0.5
+  },
+  "gate_tests": [
+    "test_outputs.py::test_gate_reconstructs_integer_span"
+  ],
+  "tests": {
+    "test_outputs.py::test_primary_distance_table_recovers_exact_positions": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "从完整距离多重集恢复原始整数坐标，是测距档案复原的主能力。"
+    },
+    "test_outputs.py::test_four_way_distance_table_minimizes_gap_energy": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "同一距离表有四种真实重建时，只有字典序最小坐标能作为唯一标尺。"
+    },
+    "test_outputs.py::test_reflected_twin_uses_lexicographic_minimum": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "翻转产生的另一组合法坐标必须按公开规范消歧，不能依赖搜索先后。"
+    },
+    "test_outputs.py::test_gaps_span_and_distance_total_follow_positions": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "间隔、跨距与距离总和是从同一重建派生出的维护核对量。"
+    },
+    "test_outputs.py::test_upper_bound_16_points_is_reconstructed": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "公开上界的十六点距离表必须完整重建，不能只恢复少量端点。"
+    },
+    "test_outputs.py::test_output_is_compact_sorted_and_repeatable": {
+      "weight": 0.07,
+      "priority": "core",
+      "rationale": "四个精确字段和稳定字节决定标尺档案能否被后续工作台直接复验。"
+    },
+    "test_outputs.py::test_7_points_are_refused": {
+      "weight": 0.03,
+      "priority": "boundary",
+      "rationale": "低于公开下限的距离表不足以稳定复原标尺，应在计算前拒收。"
+    },
+    "test_outputs.py::test_17_points_are_refused": {
+      "weight": 0.03,
+      "priority": "boundary",
+      "rationale": "超过公开上限的距离表不在导出范围内，继续计算会误导维护安排。"
+    },
+    "test_outputs.py::test_wrong_distance_count_is_refused": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "距离数量与点数不匹配时不可能覆盖所有点对，必须立即拒收。"
+    },
+    "test_outputs.py::test_zero_distance_is_refused": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "零距离意味着重复坐标，与严格递增标尺的定义矛盾。"
+    },
+    "test_outputs.py::test_oversized_distance_is_refused": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "超出量具量程的距离不能进入标尺重建，否则会生成不可能的坐标。"
+    },
+    "test_outputs.py::test_distance_upper_bound_is_accepted": {
+      "weight": 0.02,
+      "priority": "boundary",
+      "rationale": "公开量程上界必须可真实使用，否则大跨距标尺会在解析阶段被误拒。"
+    },
+    "test_outputs.py::test_boolean_distance_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "布尔值会伪装成一，不能作为真实测量距离。"
+    },
+    "test_outputs.py::test_impossible_distance_multiset_is_refused": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "不存在整数标尺时不得落盘，避免把不可解档案伪装成成功结果。"
+    },
+    "test_outputs.py::test_extra_top_level_key_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "额外档案字段可能来自另一版量具，混入后会让距离口径不可信。"
+    },
+    "test_outputs.py::test_missing_top_level_key_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "缺少点数或距离数组的档案不完整，不能凭默认值重建标尺。"
+    },
+    "test_outputs.py::test_wrong_schema_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "错误版本标识暗示距离定义不同，继续解析会破坏维护记录归并。"
+    },
+    "test_outputs.py::test_duplicate_top_level_key_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "同名键重复会让解析器静默覆盖距离表，必须在计算前阻断。"
+    }
+  }
+}
