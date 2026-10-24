@@ -9,6 +9,15 @@ from pathlib import Path
 
 
 ENTRY = os.environ.get("SPAN_ENTRY", "/app/predict.py")
+
+SAFE_ENV = {
+    "PATH": "/usr/bin:/bin",
+    "HOME": "/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+}
 SCHEMA = "integer-span-v1"
 PRIMARY = [0, 3, 7, 12, 20, 31, 45, 58, 76, 95, 119, 150]
 FOUR_WAY_MIN = [0, 7, 15, 40, 44, 48, 73, 80]
@@ -18,9 +27,10 @@ UPPER = [0, 2, 5, 9, 14, 20, 27, 35, 44, 54, 65, 77, 90, 104, 119, 135]
 
 def _run(source: Path, output: Path) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, ENTRY, str(source), str(output)],
+        [sys.executable, "-S", "-P", "-B", ENTRY, str(source), str(output)],
         text=True,
         capture_output=True,
+        env=SAFE_ENV,
         timeout=20,
         check=False,
     )
