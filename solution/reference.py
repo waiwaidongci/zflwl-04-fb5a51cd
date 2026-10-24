@@ -80,7 +80,7 @@ def _reconstruct(count: int, distances: list[int]) -> tuple[int, ...]:
             return
         largest = max(value for value, amount in remaining.items() if amount > 0)
         for candidate in {largest, span - largest}:
-            if candidate <= 0 or candidate >= span or candidate in positions:
+            if not 0 < candidate < span or candidate in positions:
                 continue
             differences = [abs(candidate - value) for value in positions]
             if any(remaining[value] <= 0 for value in differences):
